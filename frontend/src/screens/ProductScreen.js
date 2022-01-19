@@ -9,6 +9,7 @@ import Rating from '../components/Rating';
 import products from '../products';
 
 const ProductScreen = (props) => {
+    // The params in the path is in props.match.params object
     const product = products.find((p) => p._id === props.match.params.id);
 
     return <>

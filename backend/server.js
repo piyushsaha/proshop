@@ -4,7 +4,11 @@ import dotenv from 'dotenv';
 // Dummy data
 import products from './data/products.js';
 
+// DB
+import connectDB from './config/db.js'
+
 dotenv.config();
+connectDB();
 
 const app = express();
 

@@ -7,7 +7,7 @@ import { Row, Col, Card, Button, ListGroup, Image, Form } from 'react-bootstrap'
 import Message from '../components/Message';
 
 // Redux actions
-import { addToCart } from '../redux/actions/cartActions';
+import { addToCart, removeFromCart } from '../redux/actions/cartActions';
 
 const CartScreen = (props) => {
     const productId = props.match.params.id;
@@ -21,7 +21,9 @@ const CartScreen = (props) => {
         }
     }, [dispatch, productId, qty]);
 
-    const removeFromCartHandler = (id) => { console.log(id); }
+    const removeFromCartHandler = (id) => {
+        dispatch(removeFromCart(id));
+    }
     const checkoutHandler = () => {
         props.history.push(`/login?redirect=shipping`);
     }
@@ -30,9 +32,7 @@ const CartScreen = (props) => {
             <Col md={8}>
                 <h1>Shopping Cart</h1>
                 {cartItems.length === 0 ? (
-                    <Message>
-                        Your cart is empty <Link to='/'>Go Back</Link>
-                    </Message>
+                    <Message variant='info' message='Your cart is empty' />
                 ) : (
                     <ListGroup variant='flush'>
                         {cartItems.map((item) => (

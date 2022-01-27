@@ -1,4 +1,5 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = mongoose.Schema({
     name: {
@@ -24,6 +25,12 @@ const userSchema = mongoose.Schema({
         timestamps: true,
     }
 );
+
+// Normal function keyword is used instead of arrow function
+// This is because the this keyword inside an arrow function is the global scope object which is not correct for our use case
+userSchema.methods.matchPassword = async function(enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+}
 
 const User = mongoose.model('User', userSchema);
 

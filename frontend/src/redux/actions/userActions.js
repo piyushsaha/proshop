@@ -16,4 +16,11 @@ export const login = (email, password) => {
             });
         }
     }
-} 
+}
+
+export const logout = () => {
+    return (dispatch) => {
+        dispatch({ type: userConstants.USER_LOGOUT });
+        localStorage.removeItem('userInfo');
+    }
+}

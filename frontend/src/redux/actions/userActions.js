@@ -24,3 +24,21 @@ export const logout = () => {
         localStorage.removeItem('userInfo');
     }
 }
+
+export const register = (name, email, password) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: userConstants.USER_REGISTER_REQUEST });
+            const res = await axios.post('/api/users', { name, email, password });
+            dispatch({ type: userConstants.USER_REGISTER_SUCCESS, payload: res.data });
+            dispatch({ type: userConstants.USER_LOGIN_SUCCESS, payload: res.data });
+            localStorage.setItem('userInfo', res.data);
+        }
+        catch(error) {
+            dispatch({
+                type: userConstants.USER_REGISTER_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

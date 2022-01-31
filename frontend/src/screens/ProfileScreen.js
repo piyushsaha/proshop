@@ -7,7 +7,7 @@ import Message from '../components/Message';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 // Redux actions
-import { getUserDetails } from '../redux/actions/userActions';
+import { getUserDetails, updateUserProfile } from '../redux/actions/userActions';
 
 const ProfileScreen = (props) => {
     const [name, setName] = useState('');
@@ -21,9 +21,12 @@ const ProfileScreen = (props) => {
     const { loading, error, user} = userDetails;
     const userLogin = useSelector(state => state.userLogin);
     const { userInfo } = userLogin;
+    
+    const userUpdateProfile = useSelector(state => state.userUpdateProfile);
+    const { success } = userUpdateProfile;
 
-    // If user is not logged in
     useEffect(() => {
+        // If user is not logged in
         if(!userInfo) {
             props.history.push('/login');
         }
@@ -44,7 +47,7 @@ const ProfileScreen = (props) => {
             setMessage('Passwords do not match');
         }
         else {
-            // DISPATCH update profile
+            dispatch(updateUserProfile({ id: user._id, name, email, password }));
         }
     }
 
@@ -55,6 +58,7 @@ const ProfileScreen = (props) => {
         <h2>User Details</h2>
         {message && <Message message={message} />}
         {error && <Message message={error} />}
+        {success && <Message variant='success' message={'Profile successfully updated'} />}
         {loading && <LoadingSpinner />}
         <Form onSubmit={submitHandler}>
             <Form.Group controlId='name'>

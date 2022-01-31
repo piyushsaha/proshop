@@ -42,3 +42,24 @@ export const register = (name, email, password) => {
         }
     }
 }
+
+export const getUserDetails = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: userConstants.USER_DETAILS_REQUEST });
+            
+            // Setting header with JWT token
+            const config = { headers: { Authorization: `Bearer ${getState().userLogin.userInfo.token}` } };
+            // Hits /api/users/profile for profile or ID as passed to it
+            const res = await axios.get(`/api/users/${id}`, config);
+            
+            dispatch({ type: userConstants.USER_DETAILS_SUCCESS, payload: res.data });
+        }
+        catch(error) {
+            dispatch({
+                type: userConstants.USER_DETAILS_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

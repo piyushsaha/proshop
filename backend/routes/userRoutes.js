@@ -73,4 +73,34 @@ router.post('/', asyncHandler(async (req, res) => {
     }
 }));
 
+// @desc       Update user profile
+// @route      PUT /api/users/profile
+// @access     Private
+router.put('/profile', protect, asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if(user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        // Because password is freshly hashed every time it is updated, we avoid updating password field until client wants
+        if(req.body.password) {
+            user.password = req.body.password;
+        }
+        
+        await user.save();
+        
+        res.status(200);
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin
+        });   
+    }
+    else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+}))    
+    
+
 export default router;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,8 +7,12 @@ import { Link } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
 
-const PlaceOrderScreen = () => {
+// Redux actions
+import { createOrder } from '../redux/actions/orderActions';
+
+const PlaceOrderScreen = (props) => {
     const cart = useSelector(state => state.cart);
+    const dispatch = useDispatch();
     
     // Calculations
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => {
@@ -19,8 +23,27 @@ const PlaceOrderScreen = () => {
     cart.totalPrice = parseFloat((cart.itemsPrice + cart.shippingPrice + cart.taxPrice).toFixed(2));
     
     const placeOrderHandler = () => {
-        console.log('PLace Order');
+        dispatch(createOrder({
+            orderItems: cart.cartItems,
+            shippingAddress: cart.shippingAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            taxPrice: cart.taxPrice,
+            totalPrice: cart.totalPrice            
+        }));
     }
+    
+    // Created order response from server stored in redux store
+    const orderCreate = useSelector(state => state.orderCreate);
+    const { order, success, error } = orderCreate;
+    // Redirecting to order page if order is successfully created
+    useEffect(() => {
+        if(success) {
+            props.history.push(`/orders/${order._id}`);
+        }
+    }, [success, props.history]);
+    
     return <>
         <CheckoutSteps step1 step2 step3 step4 />
         <Row>
@@ -95,6 +118,8 @@ const PlaceOrderScreen = () => {
                                 <Col>${cart.totalPrice}</Col>
                             </Row>
                         </ListGroup.Item>
+                        {/* Displaying if any error happens */}
+                        {error && <Message variant='danger' message={error} />}
                         <ListGroup.Item>
                             <Button
                                 type='button'

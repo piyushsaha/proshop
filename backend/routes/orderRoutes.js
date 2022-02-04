@@ -14,13 +14,12 @@ const router = express.Router();
 // @access     Private
 router.post('/', protect, asyncHandler(async (req, res) => {
     const { orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice } = req.body;
-    
     // If empty order is requested
     if(orderItems && orderItems.length === 0) {
         res.status(400);
         throw new Error('No order items!');
     }
-    const order = new Order({
+    const order = await Order.create({
         user: req.user._id,
         orderItems,
         shippingAddress,

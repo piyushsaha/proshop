@@ -33,4 +33,21 @@ router.post('/', protect, asyncHandler(async (req, res) => {
     res.status(201).json(createdOrder);
 }));
 
+// @desc       Get an order by its ID
+// @route      GET /api/orders/:id
+// @access     Private
+router.get('/:id', protect, asyncHandler(async (req, res) => {
+    // Populate the user foreign key reference with only name and email
+    const order = await Order.findById(req.params.id).populate('user', 'name email');
+    
+    if(order) {
+        res.status(200);
+        res.json(order);
+    }
+    else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+}));
+
 export default router;

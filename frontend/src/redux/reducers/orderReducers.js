@@ -13,12 +13,12 @@ export const orderCreateReducer = (state = {}, action) => {
     }
 }
 
-export const orderDetailsReducer = (state = {orderItems: []}, action) => {
+export const orderDetailsReducer = (state = {loading: true, order: {}}, action) => {
     switch(action.type) {
         case orderConstants.ORDER_DETAILS_REQUEST:
             return { ...state, loading: true };
         case orderConstants.ORDER_DETAILS_SUCCESS:
-            return { loading: false, orderItems: action.payload };
+            return { loading: false, order: action.payload };
         case orderConstants.ORDER_DETAILS_FAIL:
             return { loading: false, error: action.payload };
         default:

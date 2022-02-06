@@ -17,7 +17,7 @@ const reducer = combineReducers({
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
     orderCreate: orderCreateReducer,
-    orderDetails: orderCreateReducer
+    orderDetails: orderDetailsReducer
 });
 
 // Cart items from browser localstorage

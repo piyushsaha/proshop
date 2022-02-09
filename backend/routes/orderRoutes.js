@@ -33,6 +33,16 @@ router.post('/', protect, asyncHandler(async (req, res) => {
     res.status(201).json(createdOrder);
 }));
 
+// @desc       Get all orders of the logged in user
+// @route      PUT /api/orders/myorders
+// @access     Private
+router.get('/myorders', protect, asyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+    res.status(200);
+    res.json(orders);    
+}));
+
+
 // @desc       Get an order by its ID
 // @route      GET /api/orders/:id
 // @access     Private

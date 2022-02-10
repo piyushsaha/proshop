@@ -88,3 +88,20 @@ export const updateUserProfile = (user) => {
         }
     }
 }
+
+export const getUsers = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: userConstants.USER_LIST_REQUEST });
+            const config = { headers: { Authorization: `Bearer ${getState().userLogin.userInfo.token}` } };
+            const res = await axios.get('/api/users', config);
+            dispatch({ type: userConstants.USER_LIST_SUCCESS, payload: res.data });
+        }
+        catch(error) {
+            dispatch({
+                type: userConstants.USER_LIST_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message 
+            });
+        }        
+    }
+}

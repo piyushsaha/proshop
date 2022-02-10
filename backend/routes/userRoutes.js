@@ -8,7 +8,7 @@ import User from '../models/userModel.js';
 import generateJWT from '../util/generateJWT.js';
 
 // Auth middlewares
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -100,7 +100,16 @@ router.put('/profile', protect, asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error('User not found');
     }
-}))    
+}));
+
+// @desc       Get all users
+// @route      GET /api/users/
+// @access     Private/Admin
+router.get('/', protect, admin, asyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.status(200);
+    res.json(users);
+}));
     
 
 export default router;

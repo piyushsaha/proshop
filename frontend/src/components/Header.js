@@ -48,6 +48,29 @@ const Header = () => {
                         </LinkContainer>
                         )}
                         
+                        {/* Rendering admin menu based on whether logged in user is admin or not */}
+                        {userInfo && userInfo.isAdmin ? (
+                            <NavDropdown title='Admin Menu' id='admin'>
+                                <LinkContainer to='/admin/userlist'>
+                                    <NavDropdown.Item>
+                                       Users
+                                    </NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/admin/productlist'>
+                                    <NavDropdown.Item>
+                                       Products
+                                    </NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/admin/orderlist'>
+                                    <NavDropdown.Item>
+                                       Orders
+                                    </NavDropdown.Item>
+                                </LinkContainer>
+                            </NavDropdown>
+                        ) : (
+                            <></>
+                        )}
+                        
                     </Nav>
                 </Navbar.Collapse>
             </Container>

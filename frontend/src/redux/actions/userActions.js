@@ -25,6 +25,8 @@ export const logout = () => {
         // Empty the user details and orders list after logout
         dispatch({ type: userConstants.USER_DETAILS_RESET });
         dispatch({ type: ORDER_LIST_MY_RESET });
+        // Empty users list
+        dispatch({ type: userConstants.USER_LIST_RESET });
         localStorage.removeItem('userInfo');
     }
 }

@@ -8,7 +8,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
 
 // Redux actions
-import { getUsers } from '../redux/actions/userActions';
+import { getUsers, deleteUser } from '../redux/actions/userActions';
 
 const UserListScreen = (props) => {
     const dispatch = useDispatch();
@@ -27,8 +27,11 @@ const UserListScreen = (props) => {
         }
     }, [dispatch]);
     
-    const userDeleteHandler = (ID) => {
-        console.log(ID);
+    const userDeleteHandler = async (id) => {
+        if(window.confirm('Are you sure want to delete this user?')) {
+            await dispatch(deleteUser(id));
+            dispatch(getUsers());
+        }
     }
     
     return <>

@@ -107,3 +107,20 @@ export const getUsers = () => {
         }        
     }
 }
+
+export const deleteUser = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: userConstants.USER_DELETE_REQUEST });
+            const config = { headers: { Authorization: `Bearer ${getState().userLogin.userInfo.token}` } };
+            await axios.delete(`/api/users/${id}`, config);
+            dispatch({ type: userConstants.USER_DELETE_SUCCESS });
+        }
+        catch(error) {
+            dispatch({
+                type: userConstants.USER_DELETE_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

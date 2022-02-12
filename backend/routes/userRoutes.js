@@ -119,6 +119,14 @@ router.delete('/:id', protect, admin, asyncHandler(async (req, res) => {
     res.status(200);
     res.json({ message: "User deleted!"});
 }));
-    
+
+// @desc       Get a user by ID
+// @route      GET /api/users/:id
+// @access     Private/Admin
+router.get('/:id', protect, admin, asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password');
+    res.status(200);
+    res.json(user);
+}));
 
 export default router;

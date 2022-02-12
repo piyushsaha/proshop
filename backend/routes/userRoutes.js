@@ -129,4 +129,28 @@ router.get('/:id', protect, admin, asyncHandler(async (req, res) => {
     res.json(user);
 }));
 
+// @desc       Update a user
+// @route      PUT /api/users/:id
+// @access     Private/Admin
+router.put('/:id', asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password');
+    
+    if(user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        user.isAdmin = req.body.isAdmin;
+        await user.save();  
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin
+        });
+    }
+    else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+}));
+
 export default router;

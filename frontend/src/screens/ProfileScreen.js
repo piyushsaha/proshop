@@ -112,6 +112,7 @@ const ProfileScreen = (props) => {
         <Col md={9}>
             <h2>My Orders</h2>
             {loadingOrders ? <LoadingSpinner /> : errorOrders ? <Message variant='danger' message={errorOrders} /> : (
+                orders.length === 0 ? <Message variant='info' message='No orders placed' /> : (
                 <Table bordered hover responsive className='table-sm'>
                     <thead>
                         <tr>
@@ -139,7 +140,7 @@ const ProfileScreen = (props) => {
                             </tr>
                         })}
                     </tbody>
-                </Table>
+                </Table>)
             )}
         </Col>
     </Row>

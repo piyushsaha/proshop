@@ -124,3 +124,21 @@ export const deleteUser = (id) => {
         }
     }
 }
+
+export const updateUser = (user) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: userConstants.USER_UPDATE_REQUEST });
+            const config = { headers: { Authorization: `Bearer ${getState().userLogin.userInfo.token}` } };
+            const res = await axios.put(`/api/users/${user._id}`, user, config);
+            dispatch({ type: userConstants.USER_UPDATE_SUCCESS });
+            dispatch({ type: userConstants.USER_DETAILS_SUCCESS, payload: res.data });
+        }
+        catch(error) {
+            dispatch({
+                type: userConstants.USER_UPDATE_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

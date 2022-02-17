@@ -5,3 +5,9 @@ main {
 h3 {
     padding: 1rem 0;
   }
+header {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0px;
+    z-index: 999;
+}

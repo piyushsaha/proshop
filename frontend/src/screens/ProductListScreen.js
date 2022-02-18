@@ -42,7 +42,7 @@ const ProducListScreen = (props) => {
             </Col>
         </Row>
         {loading ? <LoadingSpinner /> : error ? <Message variant='danger' message={error} /> : (
-            <Table striped bordered hover responsive>
+            <Table striped bordered hover responsive className='table-sm'>
                 <thead>
                     <tr>
                         <th>ID</th>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -8,7 +8,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
 
 // Redux actions
-import { listProducts } from '../redux/actions/productActions';
+import { listProducts, deleteProduct } from '../redux/actions/productActions';
 
 const ProducListScreen = (props) => {
     const dispatch = useDispatch();
@@ -18,6 +18,11 @@ const ProducListScreen = (props) => {
     const userLogin = useSelector(state => state.userLogin);
     const { userInfo } = userLogin;
     
+    const productDelete = useSelector(state => state.productDelete);
+    const { loading: deleteLoading, error: deleteError, success: deleteSuccess } = productDelete;
+    const [isSuccess, setIsSuccess] = useState(deleteSuccess);
+    const [isError, setIsError] = useState(deleteError);
+    
     useEffect(() => {
         if(userInfo && userInfo.isAdmin) {
             dispatch(listProducts());
@@ -25,10 +30,25 @@ const ProducListScreen = (props) => {
         else {
             props.history.push('/login');
         }
-    }, [dispatch]);
+        // deleteSuccess to fetch updated list of products
+    }, [dispatch, deleteSuccess]);
+    
+    // Displaying messages of success or error
+    useEffect(() => {
+        if(deleteError) {
+           setIsError(deleteError);
+           setTimeout(() => setIsError(null), 10000); 
+        }
+        if(deleteSuccess) {
+            setIsSuccess(true);
+            setTimeout(() => setIsSuccess(false), 5000);
+        }
+    }, [deleteError, deleteSuccess]);
     
     const productDeleteHandler = (id) => {
-        // + DELETE PRODUCT
+        if(window.confirm('Are you sure want to delete this item?')) {
+            dispatch(deleteProduct(id));
+        }
     }
     const createProductHandler = (product) => {
         // + CREATE PRODUCT
@@ -41,6 +61,8 @@ const ProducListScreen = (props) => {
                 <Button> <i className='fas fa-plus' /> Create Product</Button>
             </Col>
         </Row>
+        {isError && <Message variant='danger' message={deleteError} />}
+        {isSuccess && <Message variant='success' message='Product succesfully deleted!' />} 
         {loading ? <LoadingSpinner /> : error ? <Message variant='danger' message={error} /> : (
             <Table striped bordered hover responsive className='table-sm'>
                 <thead>

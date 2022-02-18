@@ -43,3 +43,26 @@ export const singleProduct = (id) => {
         }
     }
 }
+
+export const deleteProduct = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            // Starts the request to delete
+            dispatch({ type: productConstants.PRODUCT_DELETE_REQUEST });
+            
+            // Deleting
+            const config = { headers: { Authorization: `Bearer ${getState().userLogin.userInfo.token}` } };
+            await axios.delete(`/api/products/${id}`, config);
+            
+            // Delete was successful
+            dispatch({ type: productConstants.PRODUCT_DELETE_SUCCESS });
+            
+        }
+        catch(error) {
+            dispatch({
+                type: productConstants.PRODUCT_DELETE_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

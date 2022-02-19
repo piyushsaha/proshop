@@ -48,4 +48,26 @@ router.delete('/:id', protect, admin, asyncHandler(async (req, res) => {
     
 }));
 
+// @desc       Create a single product
+// @route      POST /api/products
+// @access     Public
+router.post('/', protect, admin, asyncHandler(async (req, res) => {
+    const product = new Product({
+        user: req.user._id,
+        name: 'Sample',
+        image: '/images/sample.jpg',
+        brand: 'Sample brand',
+        category: 'Sample category',
+        description: 'Sample description',
+        rating: 0,
+        numReviews: 0,
+        price: 0,
+        countInStock: 0
+    });
+    
+    await product.save();
+    res.status(201);
+    res.json(product);
+}));
+
 export default router;

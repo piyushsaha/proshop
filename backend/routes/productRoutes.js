@@ -70,4 +70,29 @@ router.post('/', protect, admin, asyncHandler(async (req, res) => {
     res.json(product);
 }));
 
+// @desc       Update a product
+// @route      PUT /api/products/:id
+// @access     Private/Admin
+router.put('/:id', asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    
+    if(product) {
+        product.name = req.body.name;
+        product.image = req.body.image;
+        product.brand = req.body.brand;
+        product.category = req.body.category;
+        product.description = req.body.description;
+        product.price = req.body.price;
+        product.countInStock = req.body.countInStock;
+        
+        await product.save();
+        res.status(200);
+        res.json(product);
+    }
+    else {
+        res.status(404);
+        throw new Error('Product not found');
+    }
+}));
+
 export default router;

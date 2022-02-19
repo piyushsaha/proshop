@@ -18,7 +18,7 @@ router.get('/', asyncHandler(async (req, res) => {
 }));
 
 // @desc       Fetch a single product
-// @route      GET /api/product/:id
+// @route      GET /api/products/:id
 // @access     Public
 router.get('/:id', asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
@@ -31,7 +31,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 }));
 
 // @desc       Delete a single product
-// @route      DELETE /api/product/:id
+// @route      DELETE /api/products/:id
 // @access     Public
 router.delete('/:id', protect, admin, asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
@@ -50,7 +50,7 @@ router.delete('/:id', protect, admin, asyncHandler(async (req, res) => {
 
 // @desc       Create a single product
 // @route      POST /api/products
-// @access     Public
+// @access     Private/Admin
 router.post('/', protect, admin, asyncHandler(async (req, res) => {
     const product = new Product({
         user: req.user._id,

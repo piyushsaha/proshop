@@ -8,7 +8,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
 
 // Redux actions
-import { listProducts, deleteProduct } from '../redux/actions/productActions';
+import { listProducts, deleteProduct, createProduct } from '../redux/actions/productActions';
 
 const ProducListScreen = (props) => {
     const dispatch = useDispatch();
@@ -23,42 +23,56 @@ const ProducListScreen = (props) => {
     const [isSuccess, setIsSuccess] = useState(deleteSuccess);
     const [isError, setIsError] = useState(deleteError);
     
+    const productCreate = useSelector(state => state.productCreate);
+    const { loading: createLoading, error: createError, success: createSuccess, product: createdProduct } = productCreate;
+    
     useEffect(() => {
-        if(userInfo && userInfo.isAdmin) {
-            dispatch(listProducts());
-        }
-        else {
+        // Reset the status of product creation on mounting
+        dispatch({ type: 'PRODUCT_CREATE_RESET' });
+        
+        if(!userInfo || !userInfo.isAdmin) {
             props.history.push('/login');
         }
+        
+        // If the product gets created redirect to edit screen to fill details
+        if(createSuccess) {
+            props.history.push(`/admin/product/${createdProduct._id}/edit`);
+        }
+        else {
+            dispatch(listProducts());
+        }
         // deleteSuccess to fetch updated list of products
-    }, [dispatch, deleteSuccess]);
+    }, [dispatch, deleteSuccess, createSuccess, props.history]);
     
     // Displaying messages of success or error
     useEffect(() => {
         if(deleteError) {
-           setIsError(deleteError);
-           setTimeout(() => setIsError(null), 10000); 
+            setIsError(deleteError);
+            setTimeout(() => setIsError(null), 10000); 
         }
         if(deleteSuccess) {
             setIsSuccess(true);
             setTimeout(() => setIsSuccess(false), 5000);
         }
-    }, [deleteError, deleteSuccess]);
+        // Reset the delete status after setting the message
+        dispatch({ type: 'PRODUCT_DELETE_RESET' });
+    }, [dispatch, deleteError, deleteSuccess]);
     
     const productDeleteHandler = (id) => {
         if(window.confirm('Are you sure want to delete this item?')) {
             dispatch(deleteProduct(id));
         }
     }
-    const createProductHandler = (product) => {
+    const createProductHandler = () => {
         // + CREATE PRODUCT
+        dispatch(createProduct());
     }
     
     return <>
         <Row className='my-2'>
             <Col><h1>Products</h1></Col>
             <Col className='text-right'>
-                <Button> <i className='fas fa-plus' /> Create Product</Button>
+                <Button onClick={createProductHandler}> <i className='fas fa-plus' /> Create Product</Button>
             </Col>
         </Row>
         {isError && <Message variant='danger' message={deleteError} />}
@@ -87,7 +101,6 @@ const ProducListScreen = (props) => {
                                     <Button
                                         variant='light'
                                         className='btn-sm'
-                                        onClick={createProductHandler}
                                     >
                                         <i className='fas fa-edit' />
                                     </Button>

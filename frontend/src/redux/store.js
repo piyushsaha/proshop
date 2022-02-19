@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Reducers
-import { productListReducer, productDetailsReducer, productDeleteReducer } from './reducers/productReducers';
+import { productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers'; 
 import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer, usersListReducer, userUpdateReducer } from './reducers/userReducers';
 import { orderCreateReducer, orderDetailsReducer, orderPayReducer, orderMyReducer } from './reducers/orderReducers';
@@ -22,7 +22,8 @@ const reducer = combineReducers({
     orderPay: orderPayReducer,
     orderMy: orderMyReducer,
     usersList: usersListReducer,
-    productDelete: productDeleteReducer
+    productDelete: productDeleteReducer,
+    productCreate: productCreateReducer
 });
 
 // Cart items from browser localstorage

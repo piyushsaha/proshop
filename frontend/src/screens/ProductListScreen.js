@@ -36,7 +36,7 @@ const ProducListScreen = (props) => {
         
         // If the product gets created redirect to edit screen to fill details
         if(createSuccess) {
-            props.history.push(`/admin/product/${createdProduct._id}/edit`);
+            props.history.push(`/products/${createdProduct._id}/edit`);
         }
         else {
             dispatch(listProducts());

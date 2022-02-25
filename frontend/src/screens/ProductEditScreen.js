@@ -7,7 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
 
 // Redux actions
-import { singleProduct } from '../redux/actions/productActions';
+import { singleProduct, updateProduct } from '../redux/actions/productActions';
 
 const ProductEditScreen = (props) => {
     console.log(props.match.params.id);
@@ -28,6 +28,10 @@ const ProductEditScreen = (props) => {
     
     const productID = props.match.params.id;
     
+    const { loading: loadingUpdate, error:errorUpdate, success: successUpdate } = useSelector(state => state.productUpdate);
+    const [isUpdateError, setIsUpdateError] = useState(errorUpdate);
+    const [isUpdateSuccess, setIsUpdateSuccess] = useState(successUpdate);
+    
     useEffect(() => {
         // If the product details is not loaded or a different product's details is loaded
         if(!product || product._id !== productID) {
@@ -44,6 +48,19 @@ const ProductEditScreen = (props) => {
         }        
     }, [dispatch, product, productID]);
     
+    useEffect(() => {
+        if(successUpdate) {
+            setIsUpdateSuccess(true);
+            dispatch({ type: 'PRODUCT_UPDATE_RESET' });
+            setTimeout(() => setIsUpdateSuccess(false), 5000);
+        }
+        if(errorUpdate) {
+            setIsUpdateError(true);
+            dispatch({ type: 'PRODUCT_UPDATE_RESET' });
+            setTimeout(() => setIsUpdateError(false), 5000);
+        }
+    }, [dispatch, successUpdate, errorUpdate]);
+    
     // useEffect(() => {
     //     // If updated successfully
     //     if(updateSuccess) {
@@ -59,12 +76,24 @@ const ProductEditScreen = (props) => {
     const submitHandler = (e) => {
         e.preventDefault();
         // UPDATE PRODUCT FUNCTIONALITY HERE
+        dispatch(updateProduct({
+            _id: product._id,
+            name,
+            price,
+            image,
+            brand,
+            category,
+            countInStock,
+            description
+        }));
     }
     return <>
     {loading ? <LoadingSpinner /> : error ? <Message variant='danger' message={error} /> : (
             <>
             <Button onClick={props.history.goBack} className='btn btn-light my-3'>Go back </Button>
             {/* {isSuccess && <Message variant='success' message='Updated' />} */}
+            {isUpdateSuccess && <Message variant='success' message='Updated'/>}
+            {isUpdateError && <Message variant='danger' message={errorUpdate}/>}
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId='name'>
                     <Form.Label>Name</Form.Label>
@@ -123,6 +152,7 @@ const ProductEditScreen = (props) => {
                         onChange={(e) => setDescription(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
+                {loadingUpdate && <LoadingSpinner />}
                 <Button type='submit' className='btn'>Update</Button>
             </Form>
             </>

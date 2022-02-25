@@ -85,3 +85,22 @@ export const createProduct = () => {
         }
     }
 }
+
+export const updateProduct = (product) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: productConstants.PRODUCT_UPDATE_REQUEST });
+            
+            const config = { headers: { Authorization: `Bearer ${getState().userLogin.userInfo.token}` } };
+            const res = await axios.put(`/api/products/${product._id}`, product, config);
+            
+            dispatch({ type: productConstants.PRODUCT_UPDATE_SUCCESS, payload: res.data });
+        }
+        catch(error) {
+            dispatch({
+                type: productConstants.PRODUCT_UPDATE_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

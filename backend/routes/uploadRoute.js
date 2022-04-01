@@ -40,7 +40,7 @@ const upload = multer({
 // @route      POST /api/upload
 // @access     Public
 router.post('/', upload.single('image'), (req, res) => {
-    res.send(`${req.file.path}`);
+    res.send(`/${req.file.path}`);
 });
 
 export default router;

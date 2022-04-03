@@ -5,7 +5,7 @@ import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js'
 
 // Auth middleware
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -34,10 +34,19 @@ router.post('/', protect, asyncHandler(async (req, res) => {
 }));
 
 // @desc       Get all orders of the logged in user
-// @route      PUT /api/orders/myorders
+// @route      GET /api/orders/myorders
 // @access     Private
 router.get('/myorders', protect, asyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
+    res.status(200);
+    res.json(orders);    
+}));
+
+// @desc       Get all orders
+// @route      GET /api/orders/allorders
+// @access     Private
+router.get('/allorders', protect, admin, asyncHandler(async (req, res) => {
+    const orders = await Order.find({ }).populate('user', 'id name') ;
     res.status(200);
     res.json(orders);    
 }));

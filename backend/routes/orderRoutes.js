@@ -95,4 +95,23 @@ router.put('/:id/pay', protect, asyncHandler(async (req, res) => {
     }
 }));
 
+// @desc       Update delivered status of an order
+// @route      PUT /api/orders/:id/deliver
+// @access     Private/Admin
+router.put('/:id/deliver', protect, admin, asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    
+    if(order) {
+        order.isDelivered = true;
+        order.deliveredAt = Date.now();
+        const updatedOrder = await order.save();
+        res.status(200);
+        res.send(updatedOrder);
+    }
+    else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+}));
+
 export default router;

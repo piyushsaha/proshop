@@ -97,7 +97,7 @@ const OrderScreen = (props) => {
                             {`${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}`}
                         </p>
                         { order.isDelivered ? 
-                            (<Message variant='danger' message={`Delivered at ${order.deliveredAt}`} />) 
+                            (<Message variant='success' message={`Delivered at ${order.deliveredAt}`} />) 
                             : 
                             (<Message variant='danger' message='Not delivered' />) }
                     </ListGroup.Item>

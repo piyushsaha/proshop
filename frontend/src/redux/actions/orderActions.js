@@ -89,3 +89,26 @@ export const myOrders = () => {
         }
     }
 }
+
+export const allOrders = () => {
+    return async(dispatch, getState) => {
+        try {
+            dispatch({ type: orderConstants.ORDER_LIST_REQUEST });
+            
+            // Setting header with JWT token and content type
+            const config = { headers: {
+                    Authorization: `Bearer ${getState().userLogin.userInfo.token}`
+                } };  
+            const res = await axios.get(`/api/orders/allorders`, config);
+            
+            dispatch({ type: orderConstants.ORDER_LIST_SUCCESS, payload: res.data });    
+        }
+        catch(error) {
+            console.log(error.response);
+            dispatch({
+                type: orderConstants.ORDER_LIST_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

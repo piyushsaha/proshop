@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -10,7 +10,7 @@ import Message from '../components/Message';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 // Redux actions
-import { getOrderDetails, payOrder } from '../redux/actions/orderActions';
+import { getOrderDetails, payOrder, deliverOrder } from '../redux/actions/orderActions';
 
 const OrderScreen = (props) => {
     const orderID = props.match.params.id;
@@ -25,6 +25,10 @@ const OrderScreen = (props) => {
     
     const orderPay = useSelector(state => state.orderPay);
     const { success:paySuccess, loading: payLoading } = orderPay;
+    const orderDeliver = useSelector(state => state.orderDeliver);
+    const { success:deliverSuccess, loading: deliverLoading } = orderDeliver;
+    const userLogin = useSelector(state => state.userLogin);
+    const { userInfo } = userLogin;
     
     // Calculation
     if(!loading && !error && order) {
@@ -42,10 +46,11 @@ const OrderScreen = (props) => {
             script.onload = () => { setSdkReady(true) };
             document.body.appendChild(script);
         }
-        // If order isn't loaded OR we make payment, we load order
-        if(!order || paySuccess) {
+        // If order isn't loaded OR we make payment OR admin marks as delivered, we load order
+        if(!order || paySuccess || deliverSuccess) {
             // Without reset it will keep refreshing after payment due to paySuccess
             dispatch({ type: 'ORDER_PAY_RESET' });
+            dispatch({ type: 'ORDER_DELIVER_RESET' });
             dispatch(getOrderDetails(orderID));
         }
         // If order is NOT paid
@@ -59,12 +64,17 @@ const OrderScreen = (props) => {
                 setSdkReady(true);
             }
         }
-    }, [dispatch, orderID, order, paySuccess]);
+    }, [dispatch, orderID, order, paySuccess, deliverSuccess]);
     
     // Handles success from PayPal button
     const successPaymentHandler = (paymentResult) => {
          console.log(paymentResult);
          dispatch(payOrder(orderID, paymentResult));
+    }
+    
+    const handleMarkAsDelivered = (e) => {
+        e.preventDefault();
+        dispatch(deliverOrder(order._id));
     }
     
     return loading ? <LoadingSpinner /> : error ? <Message variant='danger' message={error} /> : <>
@@ -161,6 +171,13 @@ const OrderScreen = (props) => {
                             {payLoading && <LoadingSpinner /> }
                             {!sdkReady ? <LoadingSpinner /> : <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} /> }
                         </ListGroup.Item> }
+                        {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                            <ListGroup.Item>
+                                <Button type='button' className='btn btn-block' onClick={handleMarkAsDelivered}>
+                                    Mark As Delivered
+                                </Button>
+                            </ListGroup.Item>
+                        )}
                     </ListGroup>
                 </Card>
             </Col>

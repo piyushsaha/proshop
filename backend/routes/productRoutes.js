@@ -73,7 +73,7 @@ router.post('/', protect, admin, asyncHandler(async (req, res) => {
 // @desc       Update a product
 // @route      PUT /api/products/:id
 // @access     Private/Admin
-router.put('/:id', asyncHandler(async (req, res) => {
+router.put('/:id', protect, admin, asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     
     if(product) {
@@ -88,6 +88,48 @@ router.put('/:id', asyncHandler(async (req, res) => {
         await product.save();
         res.status(200);
         res.json(product);
+    }
+    else {
+        res.status(404);
+        throw new Error('Product not found');
+    }
+}));
+
+// @desc       Add review to a product
+// @route      POST /api/products/:id/reviews
+// @access     Private
+router.post('/:id/reviews', protect, asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    
+    if(product) {
+        const isReviewedByUser = product.reviews.find((review) => review.user.toString() === req.user._id.toString());
+        
+        // If this product is already reviewd by the user
+        if(isReviewedByUser) {
+            res.status(400);
+            throw new Error('Product is already reviewd by user');
+        }
+        
+        // Adding review
+        const review = {
+            name: req.user.name,
+            rating: Number(req.body.rating),
+            comment: req.body.comment,
+            user: req.user._id
+        };
+        product.reviews.push(review);
+        
+        // Calculating the number of reviews
+        product.numReviews = product.reviews.length;
+        
+        // Calculating the average rating
+        product.rating = product.reviews.reduce((acc, item) => item.rating, 0) / product.reviews.length;
+        
+        await product.save();
+        res.status(201);
+        res.json({
+            message: 'Review added to product'
+        });
     }
     else {
         res.status(404);

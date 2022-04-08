@@ -70,3 +70,17 @@ export const productUpdateReducer = (state = { product: null }, action) => {
             return state;
     }
 }
+export const productCreateReviewReducer = (state = { }, action) => {
+    switch(action.type) {
+        case productConstants.PRODUCT_CREATE_REVIEW_REQUEST:
+            return { loading: true };
+        case productConstants.PRODUCT_CREATE_REVIEW_SUCCESS:
+            return { loading: false, success: true };
+        case productConstants.PRODUCT_CREATE_REVIEW_FAIL:
+            return { loading: false, error: action.payload };
+        case productConstants.PRODUCT_CREATE_REVIEW_RESET:
+            return { };
+        default:
+            return state;
+    }
+}

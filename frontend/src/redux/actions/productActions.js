@@ -104,3 +104,22 @@ export const updateProduct = (product) => {
         }
     }
 }
+
+export const createReview = (productID, review) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: productConstants.PRODUCT_CREATE_REVIEW_REQUEST });
+            
+            const config = { headers: { Authorization: `Bearer ${getState().userLogin.userInfo.token}` } };
+            await axios.post(`/api/products/${productID}/reviews`, review, config);
+            
+            dispatch({ type: productConstants.PRODUCT_CREATE_REVIEW_SUCCESS });
+        }
+        catch(error) {
+            dispatch({
+                type: productConstants.PRODUCT_CREATE_REVIEW_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

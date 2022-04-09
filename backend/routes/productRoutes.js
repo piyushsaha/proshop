@@ -17,6 +17,17 @@ router.get('/', asyncHandler(async (req, res) => {
     res.json(products);
 }));
 
+// @desc       Search for products
+// @route      GET /api/search?keyword=-----
+// @access     Private
+router.post('/search', asyncHandler(async (req, res) => {    
+    const results = await Product.find({
+        name: { $regex: req.query.keyword, $options: 'i' }
+    });
+    res.status(200);
+    res.json(results);
+}));
+
 // @desc       Fetch a single product
 // @route      GET /api/products/:id
 // @access     Public

@@ -17,8 +17,16 @@ router.get('/', asyncHandler(async (req, res) => {
     res.json(products);
 }));
 
+// @desc       Fetch top rated products
+// @route      GET /api/products/toprated
+// @access     Public
+router.get('/toprated', asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+    res.json(products);
+}));
+
 // @desc       Search for products
-// @route      GET /api/search?keyword=-----
+// @route      GET /api/products/search?keyword=-----
 // @access     Private
 router.post('/search', asyncHandler(async (req, res) => {    
     const results = await Product.find({

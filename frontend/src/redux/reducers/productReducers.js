@@ -70,6 +70,7 @@ export const productUpdateReducer = (state = { product: null }, action) => {
             return state;
     }
 }
+
 export const productCreateReviewReducer = (state = { }, action) => {
     switch(action.type) {
         case productConstants.PRODUCT_CREATE_REVIEW_REQUEST:
@@ -80,6 +81,19 @@ export const productCreateReviewReducer = (state = { }, action) => {
             return { loading: false, error: action.payload };
         case productConstants.PRODUCT_CREATE_REVIEW_RESET:
             return { };
+        default:
+            return state;
+    }
+}
+
+export const productTopRatedReducer = (state = { products: [] }, action) => {
+    switch(action.type) {
+        case productConstants.PRODUCT_TOP_RATED_REQUEST:
+            return { loading: true, products: [] };
+        case productConstants.PRODUCT_TOP_RATED_SUCCESS:
+            return { loading: false, success: true, products: action.payload };
+        case productConstants.PRODUCT_TOP_RATED_FAIL:
+            return { loading: false, error: action.payload };
         default:
             return state;
     }

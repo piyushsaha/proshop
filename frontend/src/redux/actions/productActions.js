@@ -123,3 +123,19 @@ export const createReview = (productID, review) => {
         }
     }
 }
+
+export const getTopProducts = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: productConstants.PRODUCT_TOP_RATED_REQUEST });
+            const res = await axios.get('/api/products/toprated');
+            dispatch({ type: productConstants.PRODUCT_TOP_RATED_SUCCESS, payload: res.data });
+        }
+        catch(error) {
+            dispatch({
+                type: productConstants.PRODUCT_TOP_RATED_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            });
+        }
+    }
+}

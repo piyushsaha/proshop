@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Product from '../components/Product';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
+import ProductCarousel from '../components/ProductCarousel';
 
 // Redux actions
 import { listProducts } from '../redux/actions/productActions';
@@ -20,6 +21,8 @@ const HomeScreen = () => {
     }, [dispatch]);
     
     return <>
+        <h1>Top Rated Products</h1>
+        <ProductCarousel />
         <h1>Latest Products</h1>
         {/* While loading */}
         {loading && <LoadingSpinner />}

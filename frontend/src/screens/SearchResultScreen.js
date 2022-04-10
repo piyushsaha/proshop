@@ -6,6 +6,7 @@ import axios from 'axios';
 import Product from '../components/Product';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 
 const SearchResultScreen = (props) => {
     const [loading, setLoading] = useState(false);
@@ -31,6 +32,7 @@ const SearchResultScreen = (props) => {
     }, [keyword]);
 
     return <>
+        <Meta title='Search Results' />
         <h3>Search results for "{keyword}"...</h3>
         {/* While loading */}
         {loading && <LoadingSpinner />}

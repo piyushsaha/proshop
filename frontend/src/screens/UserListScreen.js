@@ -6,6 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 // Components
 import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { getUsers, deleteUser } from '../redux/actions/userActions';
@@ -35,6 +36,7 @@ const UserListScreen = (props) => {
     }
     
     return <>
+        <Meta title='Users List' />
         <h1>Users</h1>
         {loading ? <LoadingSpinner /> : error ? <Message variant='danger' message={error} /> : (
             <Table striped bordered hover responsive>

@@ -7,6 +7,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import Message from '../components/Message';
 import LoadingSpinner from '../components/LoadingSpinner';
 import FormContainer from '../components/UI/FormContainer';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { login } from '../redux/actions/userActions';
@@ -36,6 +37,7 @@ const LoginScreen = (props) => {
 
 
     return <FormContainer>
+        <Meta title='ProShop | Sign In' />
         <h1>Sign In</h1>
         {/* {console.log(error)} */}
         {error && <Message message={error} />}

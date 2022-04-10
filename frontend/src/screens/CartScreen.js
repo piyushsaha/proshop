@@ -5,6 +5,7 @@ import { Row, Col, Card, Button, ListGroup, Image, Form } from 'react-bootstrap'
 
 // Components
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { addToCart, removeFromCart } from '../redux/actions/cartActions';
@@ -29,6 +30,7 @@ const CartScreen = (props) => {
     }
     return (
         <Row>
+            <Meta title='ProShop | Cart' />
             <Col md={8}>
                 <h1>Shopping Cart</h1>
                 {cartItems.length === 0 ? (

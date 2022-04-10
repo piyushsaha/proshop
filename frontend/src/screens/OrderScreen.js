@@ -8,6 +8,7 @@ import { PayPalButton } from 'react-paypal-button-v2';
 // Components
 import Message from '../components/Message';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { getOrderDetails, payOrder, deliverOrder } from '../redux/actions/orderActions';
@@ -78,6 +79,7 @@ const OrderScreen = (props) => {
     }
     
     return loading ? <LoadingSpinner /> : error ? <Message variant='danger' message={error} /> : <>
+    <Meta title={`Order ${order._id}`} />
         <h1>Order {order._id}</h1>
         <Row>
             <Col md={8}>

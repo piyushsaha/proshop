@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Rating from '../components/Rating';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { singleProduct, createReview } from '../redux/actions/productActions';
@@ -54,7 +55,9 @@ const ProductScreen = (props) => {
             Go Back
         </Link>
         {loading && <LoadingSpinner />}
-        {error ? <Message message={error} /> : (<> <Row>
+        {error ? <Message message={error} /> : (<> 
+            <Meta title={product.name} />
+            <Row>
             <Col md={6}>
                 <Image src={product.image} alt={product.name} fluid />
             </Col>

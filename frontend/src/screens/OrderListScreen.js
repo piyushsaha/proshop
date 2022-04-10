@@ -6,6 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 // Components
 import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { allOrders } from '../redux/actions/orderActions';
@@ -28,6 +29,7 @@ const OrderListScreen = (props) => {
     }, [dispatch]);
 
     return <>
+        <Meta title='Order List' />
         <h1>Orders</h1>
         {loading ? <LoadingSpinner /> : error ? <Message variant='danger' message={error} /> : (
             <Table striped bordered hover responsive>

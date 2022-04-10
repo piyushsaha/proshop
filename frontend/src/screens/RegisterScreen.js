@@ -7,6 +7,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import Message from '../components/Message';
 import LoadingSpinner from '../components/LoadingSpinner';
 import FormContainer from '../components/UI/FormContainer';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { register } from '../redux/actions/userActions';
@@ -44,6 +45,7 @@ const RegisterScreen = (props) => {
 
 
     return <FormContainer>
+        <Meta title='ProShop | Register' />
         <h1>Register</h1>
         {message && <Message message={message} />}
         {error && <Message message={error} />}

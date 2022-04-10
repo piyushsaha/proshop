@@ -7,6 +7,7 @@ import Product from '../components/Product';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Message from '../components/Message';
 import ProductCarousel from '../components/ProductCarousel';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { listProducts } from '../redux/actions/productActions';
@@ -21,6 +22,7 @@ const HomeScreen = () => {
     }, [dispatch]);
     
     return <>
+        <Meta />
         <h1>Top Rated Products</h1>
         <ProductCarousel />
         <h1>Latest Products</h1>

@@ -6,6 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 // Components
 import Message from '../components/Message';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Meta from '../components/Meta';
 
 // Redux actions
 import { getUserDetails, updateUserProfile } from '../redux/actions/userActions';
@@ -59,6 +60,7 @@ const ProfileScreen = (props) => {
 
 
     return <Row>
+        <Meta title='ProShop | My Profile' />
         {/* Update form */}
         <Col md={3}>
         <h2>User Details</h2>

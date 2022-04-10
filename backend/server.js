@@ -33,6 +33,18 @@ app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_I
 
 // As we are using ES modules in Node, __dirname is not accessible
 const __dirname = path.resolve();
+
+// After API routes
+// Serve the static index.html from React's build when in production
+if(process.env.NODE_ENV === 'PRODUCTION') {
+    app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+    
+    // Any route which is not any of the above (API) routes
+    app.get('*', (req, res) => {
+       res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')); 
+    });
+}
+
 // Making uploads folder static
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

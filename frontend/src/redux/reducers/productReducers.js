@@ -21,6 +21,8 @@ export const productDetailsReducer = (state = {product: { reviews: [] } }, actio
             return { loading: false, product: action.payload };
         case productConstants.PRODUCT_DETAILS_FAIL :
             return { loading: false, error: action.payload };
+        case productConstants.PRODUCT_DETAILS_CLEAR:
+            return { loading: false, product: { reviews: [] } };
         default:
             return state; 
     }

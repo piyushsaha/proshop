@@ -39,6 +39,11 @@ const ProductScreen = (props) => {
             dispatch({ type: productConstants.PRODUCT_CREATE_REVIEW_RESET });
         }
         dispatch(singleProduct(props.match.params.id));
+        
+        // Clearing the product from redux store on unmount
+        return () => {
+            dispatch({ type: productConstants.PRODUCT_DETAILS_CLEAR });
+        }
     }, [dispatch, props.match.params, createReviewSuccess]);
 
 

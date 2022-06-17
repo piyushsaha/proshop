@@ -24,12 +24,16 @@ import ProductEditScreen from './screens/ProductEditScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import SearchResultScreen from './screens/SearchResultScreen';
 
+// React Router scroll reset
+import ScrollToTop from './components/util/ScrollToTop';
+
 const App = () => {
 	return (
 		<BrowserRouter>
 			<Header />
 			<main>
 				<Container className='py-3'>
+					<ScrollToTop />
 					<Switch>
 						<Route path="/" component={HomeScreen} exact />
 						<Route path="/product/:id" component={ProductScreen} />

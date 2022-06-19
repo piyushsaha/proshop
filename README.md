@@ -18,7 +18,7 @@ A full stack ecommerce website built on MERN stack and PayPal payment gateway fo
 https://the-proshop.herokuapp.com/
 
 ## Demo
-#### User Screens
+### User Screens
 ![Landing Page](/readme-assets/landing-page.png)
 
 ![Search Results Page](/readme-assets/search.png)
@@ -29,7 +29,7 @@ https://the-proshop.herokuapp.com/
 
 ![Cart](/readme-assets/cart.png)
 
-#### Admin Screens
+### Admin Screens
 ![Admin Panel Manage Products](/readme-assets/admin-manage-product.png)
 
 ![Admin Panel Edit Product](/readme-assets/admin-edit-product.png)

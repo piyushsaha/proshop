@@ -1,5 +1,5 @@
 # ProShop
-A full stack ecommerce website built on MERN stack and PayPal payment gateway for making payments with admin panel to manage users, products and orders.
+A full stack e-commerce website with admin panel to manage users, products and orders built on MERN stack. Integrated PayPal payment gateway for making online payments.
 
 ## Tools/Libraries/Modules Used
 * React

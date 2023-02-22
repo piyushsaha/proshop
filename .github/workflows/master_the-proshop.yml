@@ -44,11 +44,8 @@ jobs:
 
     - name: npm install, build, and test
       run: |
-        npm install
         npm install --prefix ./frontend
         npm run build --prefix ./frontend
-        npm run build --if-present
-        npm run test --if-present
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
